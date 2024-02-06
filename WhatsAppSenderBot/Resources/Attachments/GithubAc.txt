@@ -1,0 +1,32 @@
+Email:mhdismail725@gmail.com
+Username:MohamadIsmail95
+Password:Rabab1ism123#
+------------------------------------------------------------------------Git Command
+
+1-git --version (get git version)
+2-git init (create git file initialization)
+3-git status (heck the Git status and see if it is a part of our repo)
+
+Note:Staged files are files that are ready to be committed to the repository you are working on.
+
+4-git add file_name ( to add file_name to git tracking changes)
+5-git add --all is git add -A (to add all files in the directory to git tracking changes)
+6-git rm --cached (to un stage file)
+7-git commit -m "Message commit"
+8-git log (to git changes log)
+9-git command_name -help
+10-git help --all
+11-git branch branch_name (to create new branch)
+12-git branch -a(to get all branches)
+13-git checkout branch_name (to switch between branches)
+14-git merge branch_name (to merge master with another branch)
+15-git branch -d branch_name (to delete branch)
+16-git remote add origin gitHubPath (to push local repo to github)
+17-git push --set-upstream origin master
+18-git fetch origin
+19-git log origin/master
+20-git diff origin/master
+21-git merge origin/master
+22-git pull origin
+23-git remote -v
+

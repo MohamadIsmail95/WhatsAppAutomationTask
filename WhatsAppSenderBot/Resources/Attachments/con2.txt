@@ -1,0 +1,7 @@
+{
+  "ConnectionStrings": {
+    "Default2": "Data Source=localhost\\SQLEXPRESS;Initial Catalog=ExcleryDb;User Id=sa;Password=Aa123456",
+    "Default": "Server=161.97.167.226;Database=ExcleryDb;User Id=sa;Password=Aa123456;Trusted_Connection=False;MultipleActiveResultSets=true;"
+
+  }
+}

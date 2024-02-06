@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] Exculate WhatsApp Bot</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+   <script src="~/js/chat.js"></script>
+    
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-success  bg-gradient">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/" + number.value" style="color:white">
+                Excylate WhatsApp Automation  <span>&copy; 2024 </span>
+
+            </a>
+        </div>
+    </nav>
+   <div class="container-fluid mt-3">
+        <form id="form" enctype="multipart/form-data">
+   <div class="row">
+    <div class="col-md-2">
+    <label>Mobile</label>
+                    <input type="text" class="form-control" id="number" name="number" placeholder="963xxxxxxxxx"><br />
+     <label>Message</label>
+                    <input type="text" class="form-control" id="message" name="message" placeholder="Text Message"><br />
+
+                    <div>
+                        <input type="radio" id="upload" name="radio" value="upload" checked />
+                        <label for="hide">Upload Excel</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="afile" name="radio" value="afile" />
+                        <label for="hide">Attach File</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="aimage" name="radio" value="aimage" />
+                        <label for="show">Attach Image</label>
+                    </div><br />
+
+
+     <div id="box" style="display:none">
+                        <label>Attach Image</label>
+                        <input type="file" class="form-control" id="image" name="imageFile" accept="image/*"><br />
+                        
+     </div>
+
+       <div id="filbox" style="display:none">
+                        <label>Attach File</label>
+                        <input type="file" class="form-control" id="fileattach" name="fileFile"><br />
+     </div>
+    
+     <div id="upexcelbox" style="display:block">
+                        <label>Upload Excel</label>                  
+                        <input type="file" class="form-control" id="upexcel" name="upexcel"><br />
+     </div>
+
+                    <div id="downexcel" style="display:block">
+                        <label>Download Excel</label>
+                        <button type="button" class="btn btn-success">
+                            <a href="/whatsapp/DownloadFile" style="color:white">
+                            <span class="glyphicon glyphicon-cloud-download"></span>
+                            </a>
+                            </button>
+                    </div><br />
+
+
+                    <button type="submit" class="btn btn-success" id="send-button">Send</button>
+     <p id="Status"></p>
+
+    </div>
+
+    </form>
+
+    <div class="col">
+      <ul id="chats"></ul>
+       <img id="qrCode" />
+      <div class="col-lg-6"><img id="ui" /></div>
+
+    </div>
+  </div>
+</div>    
+  <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+    <!--Script for post form-->
+    <script>
+        const form = document.getElementById("form");
+        const inputFile = document.getElementById("image");
+        const fileFile = document.getElementById("fileattach");
+        const excelFile = document.getElementById("upexcel");
+        const number = document.getElementById("number");
+        const message = document.getElementById("message");
+
+        const formData = new FormData();
+    
+        const handleSubmit = (event) => {
+            event.preventDefault();
+            document.getElementById("send-button").disabled = true;
+
+            for (const file of inputFile.files) {
+                formData.append("imageFile", file);
+            }
+            for (const file2 of fileFile.files) {
+                formData.append("fileFile", file2);
+            }
+            for (const file3 of excelFile.files) {
+                formData.append("excelFile", file3);
+            }
+
+            formData.append("number", number.value);
+            formData.append("message", message.value);
+
+            fetch("/whatsapp/send", {
+                method: "post",
+                body: formData,
+            }).then(response => {
+                if (response.status == 200) {
+                    alert("Operation accomplished successfully")
+                    document.getElementById("send-button").disabled = false;
+
+                }
+
+                if ((response.status == 500) || (response.status == 400)) {
+
+                    alert("Number or Message is invalid value")
+                    document.getElementById("send-button").disabled = false;
+
+                }
+            
+            })
+            .catch((error) => ("Something went wrong!", error));
+
+
+        };
+
+        form.addEventListener("submit", handleSubmit);
+    </script>
+
+
+    <!--script for radio button selection-->
+
+    <script>
+        const box = document.getElementById('box');
+        const filbox = document.getElementById('filbox');
+        const upexcel = document.getElementById('upexcelbox');
+        const downexcel = document.getElementById('downexcel');
+
+        function handleRadioClick() {
+            if (document.getElementById('upload').checked) {
+                box.style.display = 'none';
+                filbox.style.display = 'none';
+                upexcel.style.display = 'block';
+                downexcel.style.display = 'block';
+
+            }
+            if (document.getElementById('afile').checked) {
+                box.style.display = 'none';
+                filbox.style.display = 'block';
+                upexcel.style.display = 'none';
+                downexcel.style.display = 'none';
+
+            }
+            if (document.getElementById('aimage').checked) {
+                box.style.display = 'block';
+                filbox.style.display = 'none';
+                upexcel.style.display = 'none';
+                downexcel.style.display = 'none';
+
+            }
+            
+        }
+
+        const radioButtons = document.querySelectorAll('input[name="radio"]');
+        radioButtons.forEach(radio => {
+            radio.addEventListener('click', handleRadioClick);
+        });
+
+    </script>
+
+    <!--script from disable submit button-->
+     <script>
+        function disableField() {
+            const invalidForm = document.querySelector('form:invalid');
+            const submitBtn = document.getElementById('send-button');
+            if (invalidForm) {
+                submitBtn.setAttribute('disabled', true);
+            } else {
+                submitBtn.disabled = false;
+            }
+        }
+
+        disableField();
+
+        const inputs = document.getElementsByTagName("input");
+        for (let input of inputs) {
+            input.addEventListener('change', disableField);
+        }
+     </script>
+
+
+     <!--script for disable submit button aftrer send-->
+   
+</body>
+</html>
